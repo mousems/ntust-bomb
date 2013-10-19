@@ -8,15 +8,40 @@ $appId="518849124871148";
 $secret="1a303aadbf7b0b51d1feeb6bfabc9a76";
 $crlf = '
 ';
+$test="test.";//"test".ntust-bomb.org or null
 
 include("converter.class.php");
 
 include ( "NexmoMessage.php" );
 
+function fbid_to_uid($fbid){	
+	global $db_host, $db_name, $db_user, $db_pass;
+
+	$Wormdb = @mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
+	mysql_select_db ($db_name);
+
+
+	$fbid=mysql_real_escape_string($fbid);
+	$result = mysql_query("SELECT `uid` from `account` WHERE fbid='".$fbid."' ORDER BY `uid` DESC LIMIT 1");
+	$uid='';			
+				
+				
+		while($row = mysql_fetch_array($result))
+			{
+				$uid=$row['uid'];
+			}
+	if($uid==''){
+		return 0;
+	}else{
+		return $uid;
+	}
+
+}
+
 
 function log_do ($uid , $log , $kind){
 	global $db_host, $db_name, $db_user, $db_pass;
-	
+
 	$Wormdb = @mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
 	mysql_select_db ($db_name);
 	$log=mysql_real_escape_string($log);

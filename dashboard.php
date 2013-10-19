@@ -103,13 +103,16 @@ if ($user) {
 <?php
 
 if ($user) {
-  $logoutUrl = $facebook->getLogoutUrl();
+  $fbid=$user_profile['id'];
+
+
+  echo(fbid_to_uid($fbid));
 //login success
 ?>
       <!-- Jumbotron -->
       <div class="jumbotron">        
-        <h1>DashBoard</h1>
-        <p class="lead">會從伺服器端隨時監控您的流量，免安裝任何軟體，快爆流量時由系統打電話通知你，讓你放心的上網。</p>
+        <h2>DashBoard</h2>
+        <p class="lead">此處能檢視您的帳號狀況。</p>
       </div>
 
       <!-- Example row of columns -->
@@ -146,8 +149,8 @@ if ($user) {
     'canvas' => 1,
     'fbconnect' => 0,
     'scope' => 'email',
-    'next' => 'http://ntust-bomb.org',
-    'redirect_uri' => 'http://ntust-bomb.org/dashboard.php'
+    'next' => 'http://'.$test.'ntust-bomb.org',
+    'redirect_uri' => 'http://'.$test.'ntust-bomb.org/dashboard.php'
     )
   );
 ?>
