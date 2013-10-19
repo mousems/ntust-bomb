@@ -1,4 +1,5 @@
 <?php
+$office_server="140.118.34.204";
 $db_host = ("127.0.0.1");
 $db_user = ("ntustbomb");
 $db_pass = ("YjNXXsMxNdSDqW4Z");
@@ -26,7 +27,7 @@ function Getflow($ip){
 	if(!Check118($ip)){
 		return 0;
 	}else{
-		$flow=file_get_contents("http://140.118.34.204/getflow.php?ip=".$ip);
+		$flow=file_get_contents("http://".$office_server."/getflow.php?ip=".$ip);
 		return $flow;
 	}
 }
@@ -41,7 +42,7 @@ function Getflow_many($iparray){
 		$getdata.=array_pop($iparray);	
 	}
 
-	$flow=file_get_contents("http://140.118.127.30/getflow.php?ip=".$getdata);
+	$flow=file_get_contents("http://".$office_server."/getflow.php?ip=".$getdata);
 	$flow=json_decode($flow);
 	return $flow;
 }
