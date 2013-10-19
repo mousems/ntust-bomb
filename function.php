@@ -3,6 +3,8 @@ $db_host = ("127.0.0.1");
 $db_user = ("ntustbomb");
 $db_pass = ("YjNXXsMxNdSDqW4Z");
 $db_name = ("ntustbomb");
+$appId="518849124871148";
+$secret="1a303aadbf7b0b51d1feeb6bfabc9a76";
 $crlf = '
 ';
 

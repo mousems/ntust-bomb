@@ -1,28 +1,49 @@
 <?php
-if (!empty($_SERVER['HTTP_CLIENT_IP']))
-    $ip=$_SERVER['HTTP_CLIENT_IP'];
-else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-    $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
-else
-    $ip=$_SERVER['REMOTE_ADDR'];
+/**
+ * Copyright 2011 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ */
 
+require 'facebook.php';
 include("function.php");
-$str='';
 
-if(check118($ip)){
-        $dorm=GetDormStr($ip);
-        if($dorm!=0){
-                $str.= $dorm."<br />";
-        }else{
-                $str.="反解資訊：".(gethostbyaddr($ip))."<br />";
-        }
+// Create our Application instance (replace this with your appId and secret).
+$facebook = new Facebook(array(
+  'appId'  => $appId,
+  'secret' => $secret,
+));
 
-        $str.= "IP:".$ip."<br />流量:".getflow($ip)."MB";
+// Get User ID
+$user = $facebook->getUser();
 
-}else{
+// We may or may not have this data based on whether the user is logged in.
+//
+// If we have a $user id here, it means we know the user is logged into
+// Facebook, but we don't know if the access token is valid. An access
+// token is invalid if the user logged out of Facebook.
 
-        $str.= "IP:".$ip."<br />"."您的IP非位於台科大，無法提供流量資訊";
+if ($user) {
+  try {
+    // Proceed knowing you have a logged in user who's authenticated.
+    $user_profile = $facebook->api('/me');
+  } catch (FacebookApiException $e) {
+    error_log($e);
+    $user = null;
+  }
 }
+
+// Login or logout url will be needed depending on current user state.
 
 
 ?>
@@ -71,23 +92,26 @@ if(check118($ip)){
       <div class="masthead">
         <h3 class="text-muted">台科防爆網<iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Ffacebook.com%2Fntustbomb&amp;width=450&amp;height=21&amp;colorscheme=light&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;send=false&amp;appId=518849124871148" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe></h3>
         <ul class="nav nav-justified">
-          <li class="active"><a href="index.php">Home</a></li>
-          <li><a href="dashboard.php">Dashboard</a></li>
+          <li><a href="index.php">Home</a></li>
+          <li class="active"><a href="dashboard.php">Dashboard</a></li>
         </ul>
       </div>
 
+
+
+
+<?php
+
+if ($user) {
+  $logoutUrl = $facebook->getLogoutUrl();
+//login success
+?>
       <!-- Jumbotron -->
       <div class="jumbotron">        
-        <h1>Comming Soon!</h1>
-	<img src="logo.jpg" height="400" witch="400">
+        <h1>DashBoard</h1>
         <p class="lead">會從伺服器端隨時監控您的流量，免安裝任何軟體，快爆流量時由系統打電話通知你，讓你放心的上網。</p>
-        <p class="lead">服務即將推出，第一階段僅限500位使用者，可先從下方表單預約。</p>
-        <p><a class="btn btn-primary" href="https://docs.google.com/forms/d/1GxQ-NuJwen4v8U2KeWmIHl-jNn6qqiuIX_NWgvmBcjM/viewform">預約第一階段使用 &raquo;</a></p>
       </div>
-      <div class="jumbotron">
-	<h2>您目前的流量資訊</h2>
-	<p><?php echo $str; ?></p>
-      </div>
+
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-lg-4">
@@ -112,6 +136,34 @@ if(check118($ip)){
           <li>若有特殊需求請<a href="mailto:b10115012@mail.ntust.edu.tw">聯絡作者</a></li>
         </div>
       </div>
+
+<?php
+  // login success
+} else {
+  // login fail
+  $loginUrl = $facebook->getLoginUrl(
+    array(
+    'canvas' => 1,
+    'fbconnect' => 0,
+    'scope' => 'email',
+    'next' => 'http://ntust-bomb.org',
+    'redirect_uri' => 'http://ntust-bomb.org/dashboard.php'
+    )
+  );
+?>
+      <div class="jumbotron">        
+        <h1>DashBoard</h1>
+        <p class="lead">請按下方按鈕，以facebook登入。</p>
+        <a href="<?=$loginUrl;?>"><img src="facebookbutton.jpg"></a>
+      </div>
+
+<?php
+  // login fail
+  }
+
+
+?>
+
       <!-- Site footer -->
       <div class="footer">
         <p>&copy; <a href="https://facebook.com/mousems">MouseMs</a>@台科大學生會資訊室 2013</p>
