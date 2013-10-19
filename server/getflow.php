@@ -11,7 +11,8 @@
   $RB_1 = "詳細流量查詢";
   $un = "MB";
   $do_date = date("Y/m/d");
-  $ipdata = $_GET['ip'];
+  $ipdata="140.118.127.30";
+  //$ipdata = $_GET['ip'];
   $Bbase = "查詢";
   $hip = $ipdata;
   $msg_sysadm = "，請撥分機6212洽管理者！";
@@ -49,30 +50,13 @@ $data=	array(
 
 );
 
-// in real life you should use something like:
-// curl_setopt($ch, CURLOPT_POSTFIELDS, 
-//          http_build_query(array('postvar1' => 'value1')));
-
-// receive server response ...
-
-//curl_setopt($ch, CURLOPT_POSTFIELDS,$data);
-
-//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-//$server_output = curl_exec ($ch);
-//curl_close ($ch);
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "http://netweb.ntust.edu.tw/dormweb/flowquery.aspx");
-//curl_setopt($ch, CURLOPT_URL, "http://mousems.com/data/getposts.php");
 curl_setopt($ch, CURLOPT_POST, true); // 啟用POST
 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query( $data )); 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 $AA =curl_exec($ch); 
 curl_close($ch);
-//if(curl_errno($ch)){//出错则显示错误信息
-//    print curl_error($ch);
-
-//}
 preg_match('/VIEWSTATE"\svalue="\S{1,}"/', $AA , $matches);
 $a=$matches[0];
 $a=str_replace('VIEWSTATE' ,"" ,$a);
@@ -83,7 +67,6 @@ $a=base64_decode($a);
 
 preg_match('/[0-9,]{1,};IP=/', $a , $matchesa);
 $a=@str_replace(';IP=',"",$matchesa[0]);
-    //新增或修改資料unique欄位內容重覆時mysql會回報錯誤
 
 $a=str_replace(',' , "" ,$a);
 if($a==""){$a=0;}
