@@ -6,13 +6,33 @@ $db_pass = "YjNXXsMxNdSDqW4Z";
 $db_name = "ntustbomb";
 $appId="518849124871148";
 $secret="1a303aadbf7b0b51d1feeb6bfabc9a76";
+$dorm=1; //1=only dorm  , 2=all 118
 $crlf = '
 ';
 $test="test.";//"test".ntust-bomb.org or null
 
+
+if (!empty($_SERVER['HTTP_CLIENT_IP']))
+    $ip=$_SERVER['HTTP_CLIENT_IP'];
+else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+    $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+else if (!empty($_SERVER['REMOTE_ADDR']))
+    $ip=$_SERVER['REMOTE_ADDR'];
+
+
+
+//讓自己得到118ip
+$ip="140.118.232.171";
+//讓自己得到118ip
+
+
 include("converter.class.php");
 
 include ( "NexmoMessage.php" );
+
+
+
+
 
 function fbid_to_uid($fbid){	
 	global $db_host, $db_name, $db_user, $db_pass;
@@ -104,17 +124,43 @@ function Check118($ip){
 	return preg_match("/140.118.[0-9]{1,3}[.][0-9]{1,3}/",$ip);
 }
 function Check118dorm($ip){
-	return preg_match("/d([1-3])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr($ip));
+	global $office_server;
+	//----------cheat----------
+	if($office_server==$ip){
+		return preg_match("/[dD]([1-3])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr("140.118.232.171"));
+	
+	}else{
+	
+		return preg_match("/[dD]([1-3])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr($ip));
+	}
+	//----------cheat----------
+
 }
 function GetDormStr($ip){ //第X宿舍X房X床
-	if(!Check118($ip)){
-		return 0;
-	}else{
-		preg_match("/d([1-3])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr($ip), $matches);
+	global $office_server;
+	//----------cheat----------
+	if($office_server==$ip){
+		preg_match("/[dD]([1-3])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr("140.118.232.171"), $matches);
 		return "第".$matches[1]."宿舍".$matches[2]."房".$matches[3]."床\n";
+	}else{
+		if(!Check118dorm($ip)){
+			return 0;
+		}else{
+			preg_match("/[dD]([1-3])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr($ip), $matches);
+			return "第".$matches[1]."宿舍".$matches[2]."房".$matches[3]."床\n";
+		}
 	}
+
+
 }
 function Getflow($ip){
+
+	//大招
+	//return 1000;
+
+
+
+	global $office_server;
 	if(!Check118($ip)){
 		return 0;
 	}else{
@@ -122,6 +168,23 @@ function Getflow($ip){
 		return $flow;
 	}
 }
+
+
+function Getflow_toDB($ip){
+
+	
+	global $db_host, $db_name, $db_user, $db_pass;
+
+	$Wormdb = @mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
+	mysql_select_db ($db_name);
+
+	$flow=Getflow($ip);
+
+	$a=mysql_query("UPDATE `dormiptable` SET  `flow`='".$flow."',time='".@date('U')."' where `ip`='".$ip."'");
+
+
+}
+
 
 //input ip array , output flow array
 function Getflow_many($iparray){

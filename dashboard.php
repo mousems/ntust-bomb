@@ -1,24 +1,11 @@
 <?php
-/**
- * Copyright 2011 Facebook, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may obtain
- * a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
-
-require 'facebook.php';
 include("function.php");
 
-// Create our Application instance (replace this with your appId and secret).
+
+
+//facebook===========
+
+require 'facebook.php';
 $facebook = new Facebook(array(
   'appId'  => $appId,
   'secret' => $secret,
@@ -26,12 +13,6 @@ $facebook = new Facebook(array(
 
 // Get User ID
 $user = $facebook->getUser();
-
-// We may or may not have this data based on whether the user is logged in.
-//
-// If we have a $user id here, it means we know the user is logged into
-// Facebook, but we don't know if the access token is valid. An access
-// token is invalid if the user logged out of Facebook.
 
 if ($user) {
   try {
@@ -43,7 +24,8 @@ if ($user) {
   }
 }
 
-// Login or logout url will be needed depending on current user state.
+//facebook===========
+
 
 
 ?>
@@ -97,16 +79,101 @@ if ($user) {
         </ul>
       </div>
 
-
-
-
 <?php
+if(!empty($_GET['msg'])){
+  if($_GET['msg']=='regok'){$msgtitle="warning"; $msg="恭喜您註冊成功，接下來請認證信箱與手機號碼。";}
+
+ 
+
+
+
+
+?>
+
+      <div class="alert alert-<?=$msgtitle;?>">
+        <?=$msg;?>
+      </div>
+<?php
+}
 
 if ($user) {
   $fbid=$user_profile['id'];
+  $uid=fbid_to_uid($fbid);
+
+  if($uid==''){
+      header("location:reg.php");
+
+  }else{
+        
+
+        if(!empty($_GET['checkflow'])){
 
 
-  echo(fbid_to_uid($fbid));
+            if($_GET['checkflow']=="yes"){
+              
+              Getflow_toDB($ip);
+             
+            }
+        }
+
+        $Wormdb = @mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
+        mysql_select_db ($db_name);
+
+
+        $fbid=mysql_real_escape_string($fbid);
+        $result = mysql_query("SELECT * from `account` WHERE fbid='".$fbid."' ORDER BY `uid` DESC LIMIT 1");
+ 
+          while($row = mysql_fetch_array($result))
+            {
+                //$uid
+                //$fbid
+                $user_uid=$uid;
+                $user_fbid=$fbid;
+                $user_fbname=$user_profile['name'];
+                $user_schoolid=$row['schoolid'];
+                $user_ip=$row['ip'];
+                $user_phone=$row['phone'];          
+                $user_phone_ok=$row['phone_ok'];
+
+                  if($user_phone_ok){
+                      $str_phone_ok='';
+                  }else{
+                      $str_phone_ok='您尚未驗證，請<a href="check_phone.php">點此驗證</a>';
+                  }
+
+
+
+                $user_lastalarm=$row['lastalarm'];
+                $user_email_ok=$row['email_ok'];
+
+
+                  if($user_email_ok){
+                      $str_email_ok='';
+                  }else{
+                      $str_email_ok='請<a href="check_email.php">點此驗證</a>';
+                  }
+
+
+            }
+
+
+        $result = mysql_query("SELECT * from `dormiptable` WHERE ip='".$user_ip."' ORDER BY `uid` DESC LIMIT 1");
+ 
+          while($row = mysql_fetch_array($result))
+            {
+                $user_flow=$row['flow'];          
+                $user_time=$row['time'];
+
+                  if($user_time==0){
+                      $str_time='系統從未檢查過流量。';
+                  }else{
+                      $str_time=$user_flow.'MB ('.date("Y/m/d H:i:s",$user_time).'）';
+                  }
+
+                  $str_time.=" <a href='dashboard.php?checkflow=yes'>馬上檢查</a>";
+
+            }
+
 //login success
 ?>
       <!-- Jumbotron -->
@@ -118,17 +185,25 @@ if ($user) {
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-lg-4">
-          <h2>這是什麼？</h2>
-          <p>註冊後，我們將24小時監控你的宿舍流量，接近4.5GB時打電話騷擾你，避免流量爆炸。</p>
+          <h2>帳號資訊</h2>
+          <p>facebook:<a target="_blank" href="http://facebook.com/"<?=$user_fbid;?>><?=$user_fbname;?></a></p>
+          <p>Phone:0<?=$user_phone." ".$str_phone_ok;?></p>
+          <p>e-mail:<?=$user_schoolid;?>@mail.ntust.edu.tw <?=$str_email_ok;?></p>
+          <p>ip:<?=$user_ip;?></p>
+          <p>host:<?php echo(gethostbyaddr($user_ip));?></p>
+
+
         </div>
         <div class="col-lg-4">
-          <h2>優點</h2>
-          <ul>
-            <li>不用安裝軟體。</li>
-            <li>不用任何費用。</li>
-            <li>以電話通知你。</li>
-          </ul>
-          
+          <h2>流量資訊</h2>
+                    <?php
+              if(Check118dorm($user_ip)){
+                echo "<p>dorm:".GetDormStr($user_ip)."</p>";
+              }
+                    ?>
+          <p>流量：<?=$str_time;?></p>
+
+
        </div>
         <div class="col-lg-4">
           <h2>注意事項</h2>
@@ -141,6 +216,7 @@ if ($user) {
       </div>
 
 <?php
+  }
   // login success
 } else {
   // login fail
@@ -178,5 +254,7 @@ if ($user) {
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap-min.js"></script>
   </body>
 </html>

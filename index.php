@@ -1,11 +1,4 @@
 <?php
-if (!empty($_SERVER['HTTP_CLIENT_IP']))
-    $ip=$_SERVER['HTTP_CLIENT_IP'];
-else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-    $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
-else
-    $ip=$_SERVER['REMOTE_ADDR'];
-
 include("function.php");
 $str='';
 
@@ -76,6 +69,29 @@ if(check118($ip)){
         </ul>
       </div>
 
+<?php
+if(!empty($_GET['msg'])){
+  if($_GET['msg']=='not118dorm'){$msgtitle="danger"; $msg="目前暫不開放非住宿生使用本服務，或系統無法成功偵測您是住宿生，請確定您使用宿舍IP連線！";}
+  if($_GET['msg']=='not118ip'){$msgtitle="danger";  $msg="您的IP非來自台科大，或系統無法成功偵測，請確定您使用台科大宿舍IP連線！";}
+  if($_GET['msg']=='already_reg'){$msgtitle="warning";  $msg="您已是會員。";}
+  if($_GET['msg']=='fb_not_login'){$msgtitle="danger";  $msg="未連接facebook登入系統。";}
+  if($_GET['msg']=='hacker'){$msgtitle="danger";  $msg="Do Not Hack Me :)";}
+  if($_GET['msg']=='phoneerror'){$msgtitle="warning";  $msg="電話格式錯誤：09xxxxxxxx";}
+
+ 
+
+
+
+
+?>
+
+      <div class="alert alert-<?=$msgtitle;?>">
+        <?=$msg;?>
+      </div>
+<?php
+}
+?>    
+
       <!-- Jumbotron -->
       <div class="jumbotron">        
         <h1>Comming Soon!</h1>
@@ -123,5 +139,8 @@ if(check118($ip)){
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap-min.js"></script>
+
   </body>
 </html>
