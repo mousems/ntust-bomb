@@ -182,7 +182,7 @@ function Getflow_toDB($ip){
 
 	$a=mysql_query("UPDATE `dormiptable` SET  `flow`='".$flow."',time='".@date('U')."' where `ip`='".$ip."'");
 
-
+	return $flow;
 }
 
 

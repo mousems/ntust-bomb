@@ -135,10 +135,12 @@ if ($user) {
                 $user_phone=$row['phone'];          
                 $user_phone_ok=$row['phone_ok'];
 
-                  if($user_phone_ok){
+                  if($user_phone_ok=='1'){
                       $str_phone_ok='';
-                  }else{
+                  }else if($user_phone_ok=='0'){
                       $str_phone_ok='您尚未驗證，請<a href="check_phone.php">點此驗證</a>';
+                  }else{
+                      $str_phone_ok='<form method="get" action="check_phone.php"><input type="text" name="token" class="input-block-level" placeholder="請輸入手機驗證碼" ></form>';
                   }
 
 
@@ -147,7 +149,7 @@ if ($user) {
                 $user_email_ok=$row['email_ok'];
 
 
-                  if($user_email_ok){
+                  if($user_email_ok=='1'){
                       $str_email_ok='';
                   }else{
                       $str_email_ok='請<a href="check_email.php">點此驗證</a>';
@@ -196,6 +198,12 @@ if ($user) {
         </div>
         <div class="col-lg-4">
           <h2>流量資訊</h2>
+          <?php
+
+                  if($user_phone_ok!='1' | $user_email_ok!='1'){
+                      echo "<h4>信箱與電話都要驗證才能使用服務</h4>";
+                  }
+          ?>
                     <?php
               if(Check118dorm($user_ip)){
                 echo "<p>dorm:".GetDormStr($user_ip)."</p>";

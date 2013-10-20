@@ -77,6 +77,18 @@ if(!empty($_GET['msg'])){
   if($_GET['msg']=='fb_not_login'){$msgtitle="danger";  $msg="未連接facebook登入系統。";}
   if($_GET['msg']=='hacker'){$msgtitle="danger";  $msg="Do Not Hack Me :)";}
   if($_GET['msg']=='phoneerror'){$msgtitle="warning";  $msg="電話格式錯誤：09xxxxxxxx";}
+  if($_GET['msg']=='emailed'){$msgtitle="success";  $msg="認證信傳送成功，請查看學校信箱確認，若無法驗證成功請聯絡管理員。";}
+  if($_GET['msg']=='smsed'){$msgtitle="success";  $msg="手機驗證簡訊傳送成功，請查看手機確認，並填寫至dashboard，若無法驗證成功請聯絡管理員。";}
+  if($_GET['msg']=='tokenleave'){$msgtitle="warning";  $msg="您之前傳送過認證信了，請重新確認，若無法確認請聯絡管理員。";}
+  if($_GET['msg']=='smsleave'){$msgtitle="warning";  $msg="您之前傳送過認證信了，請重新確認，若無法確認請聯絡管理員。";}
+  if($_GET['msg']=='tokenok'){$msgtitle="success";  $msg="信箱驗證成功。";}
+  if($_GET['msg']=='tokenerror'){$msgtitle="danger";  $msg="信箱驗證失敗。";}
+  if($_GET['msg']=='phoneok'){$msgtitle="success";  $msg="手機驗證成功。";}
+  if($_GET['msg']=='phoneerror'){$msgtitle="danger";  $msg="手機驗證失敗。";}
+  if($_GET['msg']=='emailfirst'){$msgtitle="danger";  $msg="請先驗證信箱。";}
+
+
+
 
  
 
