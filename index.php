@@ -77,15 +77,20 @@ if(!empty($_GET['msg'])){
   if($_GET['msg']=='fb_not_login'){$msgtitle="danger";  $msg="未連接facebook登入系統。";}
   if($_GET['msg']=='hacker'){$msgtitle="danger";  $msg="Do Not Hack Me :)";}
   if($_GET['msg']=='phoneerror'){$msgtitle="warning";  $msg="電話格式錯誤：09xxxxxxxx";}
-  if($_GET['msg']=='emailed'){$msgtitle="success";  $msg="認證信傳送成功，請查看學校信箱確認，若無法驗證成功請聯絡管理員。";}
+  if($_GET['msg']=='emailed'){$msgtitle="success";  $msg="認證信傳送成功，請查看學校信箱確認！若無法驗證成功請：用學校信箱寄信給<a href='mailto:b10115012@mail.ntust.edu.tw'>管理員</a>，然後附上您的FB網址。";}
   if($_GET['msg']=='smsed'){$msgtitle="success";  $msg="手機驗證簡訊傳送成功，請查看手機確認，並填寫至dashboard，若無法驗證成功請聯絡管理員。";}
-  if($_GET['msg']=='tokenleave'){$msgtitle="warning";  $msg="您之前傳送過認證信了，請重新確認，若無法確認請聯絡管理員。";}
-  if($_GET['msg']=='smsleave'){$msgtitle="warning";  $msg="您之前傳送過認證信了，請重新確認，若無法確認請聯絡管理員。";}
+  if($_GET['msg']=='tokenleave'){$msgtitle="warning";  $msg="您之前傳送過認證信了，請重新確認，若無法驗證成功請：用學校信箱寄信給<a href='mailto:b10115012@mail.ntust.edu.tw'>管理員</a>，然後附上您的FB網址。";}
+  if($_GET['msg']=='smsleave'){$msgtitle="warning";  $msg="您之前傳送過認證簡訊了，請重新確認，若無法驗證成功請：用學校信箱寄信給<a href='mailto:b10115012@mail.ntust.edu.tw'>管理員</a>，然後附上您的手機號碼，管理員會與你聯絡確認。";}
   if($_GET['msg']=='tokenok'){$msgtitle="success";  $msg="信箱驗證成功。";}
   if($_GET['msg']=='tokenerror'){$msgtitle="danger";  $msg="信箱驗證失敗。";}
   if($_GET['msg']=='phoneok'){$msgtitle="success";  $msg="手機驗證成功。";}
   if($_GET['msg']=='phoneerror'){$msgtitle="danger";  $msg="手機驗證失敗。";}
   if($_GET['msg']=='emailfirst'){$msgtitle="danger";  $msg="請先驗證信箱。";}
+  if($_GET['msg']=='testcallok'){$msgtitle="success";  $msg="測試電話已播出，請準備接聽。";}
+  if($_GET['msg']=='testcallfail'){$msgtitle="danger";  $msg="您今天已經測試過電話了，請明天再來玩玩:P";}
+  if($_GET['msg']=='nomail'){$msgtitle="warning";  $msg="若無法驗證成功請：用學校信箱寄信給<a href='mailto:b10115012@mail.ntust.edu.tw'>管理員</a>，然後附上您的FB網址。";}
+
+
 
 
 
@@ -105,12 +110,11 @@ if(!empty($_GET['msg'])){
 ?>    
 
       <!-- Jumbotron -->
-      <div class="jumbotron">        
-        <h1>Comming Soon!</h1>
+      <div class="jumbotron"> 
 	<img src="logo.jpg" height="400" witch="400">
         <p class="lead">會從伺服器端隨時監控您的流量，免安裝任何軟體，快爆流量時由系統打電話通知你，讓你放心的上網。</p>
-        <p class="lead">服務即將推出，第一階段僅限500位使用者，可先從下方表單預約。</p>
-        <p><a class="btn btn-primary" href="https://docs.google.com/forms/d/1GxQ-NuJwen4v8U2KeWmIHl-jNn6qqiuIX_NWgvmBcjM/viewform">預約第一階段使用 &raquo;</a></p>
+        <p class="lead">目前設計僅提供服務給500位使用者！</p>
+        <p><a class="btn btn-primary" href="dashboard.php">現在就註冊 &raquo;</a></p>
       </div>
       <div class="jumbotron">
 	<h2>您目前的流量資訊</h2>
@@ -126,18 +130,17 @@ if(!empty($_GET['msg'])){
           <h2>優點</h2>
           <ul>
             <li>不用安裝軟體。</li>
-            <li>不用任何費用。</li>
+            <li>不用任何費用，但歡迎贊助:)</li>
             <li>以電話通知你。</li>
           </ul>
           
        </div>
         <div class="col-lg-4">
           <h2>注意事項</h2>
-          <li>系統10分鐘檢查一次，台科網路10分鐘可以傳輸1100MB，故設計於4.5GB通知（約在5.6GB斷網）。</li>
-          <li>打電話給你沒接到，被斷網我也沒辦法了orz</li>
-          <li>目前設計給台科大住宿生（有線網路）</li>
-          <li>未來或許會支援台科全網段監控...看心情和系統負擔...</li>
-          <li>若有特殊需求請<a href="mailto:b10115012@mail.ntust.edu.tw">聯絡作者</a></li>
+          <p>系統10分鐘檢查一次，4.5GB打電話通知</p>
+          <p>打電話給你沒接到，被斷網我也沒辦法了orz</p>
+          <p>目前設計給台科大住宿生（有線網路）</p>
+          <p>若有特殊需求請<a href="mailto:b10115012@mail.ntust.edu.tw">聯絡作者</a></p>
         </div>
       </div>
       <!-- Site footer -->

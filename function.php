@@ -9,7 +9,7 @@ $secret="1a303aadbf7b0b51d1feeb6bfabc9a76";
 $dorm=1; //1=only dorm  , 2=all 118
 $crlf = '
 ';
-$test="test.";//"test".ntust-bomb.org or null
+$test="";//"test".ntust-bomb.org or null
 
 
 if (!empty($_SERVER['HTTP_CLIENT_IP']))
@@ -22,13 +22,13 @@ else if (!empty($_SERVER['REMOTE_ADDR']))
 
 
 //讓自己得到118ip
-$ip="140.118.232.171";
+//$ip="140.118.232.171";
 //讓自己得到118ip
 
 
 include("converter.class.php");
 
-include ( "NexmoMessage.php" );
+include("NexmoMessage.php");
 
 
 
@@ -59,7 +59,7 @@ function fbid_to_uid($fbid){
 }
 
 
-function log_do ($uid , $log , $kind){
+function log_do ($uid=0 , $log , $kind){
 	global $db_host, $db_name, $db_user, $db_pass;
 
 	$Wormdb = @mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
@@ -121,17 +121,20 @@ function phone_regex($to){
 
 
 function Check118($ip){
-	return preg_match("/140.118.[0-9]{1,3}[.][0-9]{1,3}/",$ip);
+	$value=(int) preg_match("/140.118.[0-9]{1,3}[.][0-9]{1,3}/",$ip);
+	return $value;
 }
 function Check118dorm($ip){
 	global $office_server;
 	//----------cheat----------
 	if($office_server==$ip){
-		return preg_match("/[dD]([1-3])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr("140.118.232.171"));
+		$value=(int) preg_match("/[dD]([1-4])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr("140.118.232.171"));
+		return $value;
 	
 	}else{
 	
-		return preg_match("/[dD]([1-3])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr($ip));
+		$value=(int) preg_match("/[dD]([1-4])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr($ip));
+		return $value;
 	}
 	//----------cheat----------
 
@@ -140,13 +143,14 @@ function GetDormStr($ip){ //第X宿舍X房X床
 	global $office_server;
 	//----------cheat----------
 	if($office_server==$ip){
-		preg_match("/[dD]([1-3])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr("140.118.232.171"), $matches);
+		preg_match("/[dD]([1-4])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr("140.118.232.171"), $matches);
 		return "第".$matches[1]."宿舍".$matches[2]."房".$matches[3]."床\n";
 	}else{
-		if(!Check118dorm($ip)){
+		if((int)Check118dorm($ip)==0){
 			return 0;
 		}else{
-			preg_match("/[dD]([1-3])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr($ip), $matches);
+			preg_match("/[dD]([1-4])-([0-9]{4})-([1-6]).dorm.ntust.edu.tw/", gethostbyaddr($ip), $matches);
+			if($matches[1]==4){$matches[1]=3;}
 			return "第".$matches[1]."宿舍".$matches[2]."房".$matches[3]."床\n";
 		}
 	}
@@ -158,7 +162,9 @@ function Getflow($ip){
 	//大招
 	//return 1000;
 
-
+	if($ip=="140.118.238.186"){
+		//return 4666;
+	}
 
 	global $office_server;
 	if(!Check118($ip)){

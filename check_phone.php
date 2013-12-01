@@ -45,6 +45,10 @@ if ($user) {
 								$token_real=$row['phone_ok'];
 							}
 
+
+
+
+
 						if($_GET['token']==$token_real){
 
 								$result = mysql_query("UPDATE `account` SET `phone_ok`='1' WHERE fbid='".$fbid."' ORDER BY `uid` DESC LIMIT 1");
@@ -76,8 +80,8 @@ if ($user) {
         			if($email_ok!='1'){
 
 
-                		header("location:index.php?msg=emailfirst");
-                		die();
+                		//header("location:index.php?msg=emailfirst");
+                		//die();
         			}
 
         			if($token_real==0){

@@ -44,8 +44,8 @@ if ($user) {
 
                   if($dorm==1){
                         //dorm only
-                        if(!Check118dorm($ip)){
-                              header("location:index.php?msg=not118dorm");
+                        if(Check118dorm($ip)=="0"){
+                              header("location:index.php?msg=not118dorm&info=".Check118dorm($ip));
 
 
                         }else{
@@ -60,7 +60,7 @@ if ($user) {
                   }else{
                         //all 118
 
-                        if(!Check118($ip)){
+                        if(Check118($ip)=="1"){
                               header("location:index.php?msg=not118ip");
 
 

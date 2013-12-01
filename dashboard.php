@@ -136,26 +136,28 @@ if ($user) {
                 $user_phone_ok=$row['phone_ok'];
 
                   if($user_phone_ok=='1'){
-                      $str_phone_ok='';
+                      $str_phone_ok='<span class="label label-success">驗證通過</span> <a href="check_phone_call.php">測試電話功能</a>';
                   }else if($user_phone_ok=='0'){
-                      $str_phone_ok='您尚未驗證，請<a href="check_phone.php">點此驗證</a>';
+                      $str_phone_ok='<span class="label label-warning">尚未驗證</span> <a href="check_phone.php">寄送驗證簡訊</a>';
                   }else{
-                      $str_phone_ok='<form method="get" action="check_phone.php"><input type="text" name="token" class="input-block-level" placeholder="請輸入手機驗證碼" ></form>';
+                      $str_phone_ok='<form method="get" action="check_phone.php"><span class="label label-warning">手機尚未驗證</span><input type="text" name="token" class="input-block-level" placeholder="請輸入手機驗證碼" ></form>';
                   }
 
 
 
                 $user_lastalarm=$row['lastalarm'];
                 $user_email_ok=$row['email_ok'];
-
-
+                $str_email_ok='';
+/*
                   if($user_email_ok=='1'){
-                      $str_email_ok='';
+                      $str_email_ok='<span class="label label-success">驗證通過</span>';
+                  }else if($user_email_ok=='0'){
+                      $str_email_ok='<span class="label label-warning">尚未驗證</span> <a href="check_email.php">寄送驗證信</a>';
                   }else{
-                      $str_email_ok='請<a href="check_email.php">點此驗證</a>';
+                      $str_email_ok='<span class="label label-warning">尚未驗證</span> <a href="index.php?msg=nomail">收不到信？</a>';
                   }
 
-
+*/
             }
 
 
@@ -188,38 +190,46 @@ if ($user) {
       <div class="row">
         <div class="col-lg-4">
           <h2>帳號資訊</h2>
-          <p>facebook:<a target="_blank" href="http://facebook.com/"<?=$user_fbid;?>><?=$user_fbname;?></a></p>
-          <p>Phone:0<?=$user_phone." ".$str_phone_ok;?></p>
-          <p>e-mail:<?=$user_schoolid;?>@mail.ntust.edu.tw <?=$str_email_ok;?></p>
-          <p>ip:<?=$user_ip;?></p>
-          <p>host:<?php echo(gethostbyaddr($user_ip));?></p>
-
+          <p><span class="label label-info">Facebook</span> <?=$user_fbname;?>-<?=$user_fbid;?></p>
+          <p><span class="label label-info">Phone</span> 0<?=$user_phone." ".$str_phone_ok;?></p>
+          <p><span class="label label-info">E-mail</span> <?=$user_schoolid;?> <?=$str_email_ok;?></p>
 
         </div>
         <div class="col-lg-4">
           <h2>流量資訊</h2>
           <?php
 
+/*
                   if($user_phone_ok!='1' | $user_email_ok!='1'){
-                      echo "<h4>信箱與電話都要驗證才能使用服務</h4>";
+                      echo '<span class="label label-warning">要使用自動監控功能，信箱與手機需驗證通過！</span>';
                   }
+*/
+
+
+                  if($user_phone_ok!='1'){
+                      echo '<span class="label label-warning">要使用自動監控功能，手機需驗證通過！</span>';
+                  }
+
+
+
           ?>
+          <p>IP位置：<?=$user_ip;?></p>
+          <p>IP反解：<?php echo(gethostbyaddr($user_ip));?></p>
                     <?php
               if(Check118dorm($user_ip)){
-                echo "<p>dorm:".GetDormStr($user_ip)."</p>";
+                echo "<p>住宿資訊：".GetDormStr($user_ip)."</p>";
               }
                     ?>
-          <p>流量：<?=$str_time;?></p>
+          <p>目前流量：<?=$str_time;?></p>
 
 
        </div>
         <div class="col-lg-4">
           <h2>注意事項</h2>
-          <li>系統10分鐘檢查一次，台科網路10分鐘可以傳輸1100MB，故設計於4.5GB通知（約在5.6GB斷網）。</li>
-          <li>打電話給你沒接到，被斷網我也沒辦法了orz</li>
-          <li>目前設計給台科大住宿生（有線網路）</li>
-          <li>未來或許會支援台科全網段監控...看心情和系統負擔...</li>
-          <li>若有特殊需求請<a href="mailto:b10115012@mail.ntust.edu.tw">聯絡作者</a></li>
+          <p>系統10分鐘檢查一次，4.5GB打電話通知</p>
+          <p>打電話給你沒接到，被斷網我也沒辦法了orz</p>
+          <p>目前設計給台科大住宿生（有線網路）</p>
+          <p>若有特殊需求請<a href="mailto:b10115012@mail.ntust.edu.tw">聯絡作者</a></p>
         </div>
       </div>
 

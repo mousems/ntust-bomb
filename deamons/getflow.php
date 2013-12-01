@@ -16,15 +16,15 @@ function getallflow(){
 	$Wormdb = @mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
 	mysql_select_db ($db_name);
 
-	$result = mysql_query("SELECT `ip`,`uid` from `dormiptable`  LIMIT 100");
+	$result = mysql_query("SELECT `ip`,`uid` from `dormiptable` order by `flow` desc");
 				
 				
 	while($row = mysql_fetch_array($result))
 		{
 			$ip=$row['ip'];
-			$flow=Getflow_toDB($ip);
+			$flow=(int)Getflow_toDB($ip);
 
-			printout("flow_success " , $ip."->".$flow);
+			printout("flow_success " , $ip." -> ".$flow.'MB');
 			if($flow>4500){
 					//alarm
 
@@ -43,11 +43,14 @@ function getallflow(){
 					if(date("Y/m/d" , $lastalarm) != date("Y/m/d")){
 							//call
 
-							sendvoice($phone , "您好 這裡是台科防爆網 提醒您 您的電腦流量快超過了 目前是".$flow." M B 請儘快停止上網以免被停權，謝謝。" , $uid);
+							sendvoice($phone , "台科防爆網 提醒您 您的流量目前是".$flow , $uid);
 
+							printout('info' , "Call ! ");
 							$result2=mysql_query("UPDATE `account` SET `lastalarm`='".date("U")."' WHERE `uid`='".$uid."'");
 
+					}else{
 
+							printout('info' , "Already Called...");
 					}
 
 
@@ -66,29 +69,29 @@ function getallflow(){
 
 
 
-$datea=date("U");
-
 while (1) {
 	
+	$datea=date("U");
+
+
 	//if(date("i") % 10 == 1){
 		printout('info' , "Get all flow start.");
 		getallflow();
 		printout('info' , "Get all flow done.");
 	//}
 
-	printout('info' , "sleeping...");
+	$dateb=date("U");
 
-	sleep(60);
+	$plus=600-($dateb-$datea);
 
+	printout('info' , "sleeping for ".$plus." sec...");
 
-
-
-
-
-
-
-
-
+	if($plus<0){
+		log_do(0,"take over 600 sec" , "error");
+		printout('warning' , "take over 600sec!!!===================================================================================================");
+	}else{
+		sleep($plus);
+	}
 	continue;
 }
 

@@ -79,14 +79,18 @@ if ($user) {
         				//email
         				$token=md5(date("hi").date("s").rand(1,100));
 
-        				$subject = '台科防爆網 信箱確認信';
 
+
+
+
+/*
+        				$subject = '台科防爆網 信箱確認信';
 						$message = '
 						<html>
 						<body>
-						請打開連結以驗證：<a href="http://'.$test.'ntust-bomb.org/check_email.php?token='.$token.'"http://'.$test.'ntust-bomb.org/check_email.php?token='.$token.'</a>
+						<p>請打開連結以驗證：</p><a href="http://'.$test.'ntust-bomb.org/check_email.php?token='.$token.'</a>
 						<br />
-						或：http://'.$test.'ntust-bomb.org/check_email.php?token='.$token.'
+						<p>或：http://'.$test.'ntust-bomb.org/check_email.php?token='.$token.'</p>
 						</body>
 						</html>
 						';
@@ -94,15 +98,49 @@ if ($user) {
 						// To send HTML mail, the Content-type header must be set
 						$headers  = 'MIME-Version: 1.0' . "\r\n";
 						$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-
-						// Additional headers
-						$headers .= 'From: NTUST-bomb-service <b10115012@mail.ntust.edu.tw>' . "\r\n";
+						$headers .= 'From: NTUST-bomb-service <noreply@ntust-bomb.org>' . "\r\n";
 
 						// Mail it
-						//mail($user_schoolid.'@mail.ntust.edu.tw', $subject, $message, $headers);
-						mail('mousems.kuo@gmail.com', $subject, $message, $headers);
+						mail($user_schoolid.'@mail.ntust.edu.tw', $subject, $message, $headers);
+						//mail('mousems.kuo@gmail.com', $subject, $message, $headers);
+*/
 
-        				$result = mysql_query("UPDATE `account` SET `email_ok`='".$token."' WHERE fbid='".$fbid."' ORDER BY `uid` DESC LIMIT 1");
+
+
+
+
+						require 'PHPMailer-master/PHPMailerAutoload.php';
+
+						$mail = new PHPMailer;
+
+						$mail->isSMTP();                                      // Set mailer to use SMTP
+						$mail->Host = 'mail.ntust.edu.tw';  // Specify main and backup server
+						$mail->SMTPAuth = true;                               // Enable SMTP authentication
+						$mail->Username = 'b10115012';                            // SMTP username
+						$mail->Password = 'eo3su32l4';                           // SMTP password
+						$mail->SMTPSecure = '';                            // Enable encryption, 'ssl' also accepted
+
+						$mail->setLanguage('zh', '/optional/path/to/language/directory/');
+						$mail->From = 'b10115012@mail.ntust.edu.tw';
+						$mail->FromName = 'NTUST-Bomb';
+						//$mail->addAddress($user_schoolid.'@mail.ntust.edu.tw', $user_schoolid);  // Add a recipient
+						$mail->addAddress('mousems.kuo@gmail.com', $user_schoolid);  // Add a recipient
+						$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+						$mail->isHTML(true);                                  // Set email format to HTML
+
+						$mail->Subject = 'NTUST BOMB email address authorization ';
+						//$mail->Body    = '<html><body><a href="http://'.$test.'ntust-bomb.org/check_email.php?token='.$token.'</a></body></html>';
+						$mail->AltBody = 'http://'.$test.'ntust-bomb.org/check_email.php?token='.$token.'';
+
+						if(!$mail->send()) {
+						   echo '<p>送信失敗，有時候回沒辦法連線到。</p><a href="index.php">返回首頁</a>';
+						   exit;
+						}
+
+
+
+
+        				//$result = mysql_query("UPDATE `account` SET `email_ok`='".$token."' WHERE fbid='".$fbid."' ORDER BY `uid` DESC LIMIT 1");
 
 						log_do($user_uid , "schoolid =".$user_schoolid." token=".$token , "check email sent.");
 

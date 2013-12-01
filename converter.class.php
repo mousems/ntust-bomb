@@ -260,11 +260,16 @@ class converter{
      * utf转gbk
      */
     function utf2chs($String,$Target='GBK',$Type='File'){
-        if($Source=='GBK' && $this->ICONV){
-            return iconv('UTF-8','GBK',$String);
+        
+        if(!empty($Source)){
+            if($Source=='GBK' && $this->ICONV){
+                return iconv('UTF-8','GBK',$String);
+            }
         }
-        if($Source=='BIG' && $this->ICONV){
-            return iconv('UTF-8','BIG5',$String);
+        if(!empty($Source)){
+            if($Source=='BIG' && $this->ICONV){
+                return iconv('UTF-8','BIG5',$String);
+            }
         }
         $MapFile=$this->TablePath.($Target=='GBK'?'UNI2GBK.Table':'UNI2BIG.Table');
         if(!file_exists($MapFile)){
