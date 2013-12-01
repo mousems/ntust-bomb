@@ -1,5 +1,5 @@
 <?php
-include(dirname(__FILE__)."function.php");
+include(dirname(__FILE__)."/function.php");
 
 $FlowData=array("");
 array_pop($FlowData);

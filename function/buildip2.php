@@ -2,7 +2,7 @@
 
 $start_time=date('U');
 
-include(dirname(__FILE__)."function.php");
+include(dirname(__FILE__)."/function.php");
 $Wormdb = mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
 mysql_select_db ($db_name);
 

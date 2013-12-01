@@ -1,7 +1,7 @@
 <?php
 
 
-include(dirname(__FILE__)."../function.php");
+include(dirname(__FILE__)."/../function.php");
 
 
 function printout($type , $string){
