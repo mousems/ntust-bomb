@@ -1,5 +1,5 @@
 <?php
-include("function.php");
+include(dirname(__FILE__)."function.php");
 $str='';
 
 if(check118($ip)){

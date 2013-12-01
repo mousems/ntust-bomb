@@ -26,9 +26,9 @@ else if (!empty($_SERVER['REMOTE_ADDR']))
 //讓自己得到118ip
 
 
-include("converter.class.php");
+include(dirname(__FILE__)."converter.class.php");
 
-include("NexmoMessage.php");
+include(dirname(__FILE__)."NexmoMessage.php");
 
 
 

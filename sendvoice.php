@@ -1,6 +1,6 @@
 <?php
 
-include("converter.class.php");
+include(dirname(__FILE__)."converter.class.php");
 
 // 輸入 UTF-8 編碼的繁體中文
 // 輸出 UTF-8 編碼且 URL Encode 的簡體中文
