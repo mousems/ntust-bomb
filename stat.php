@@ -38,7 +38,60 @@ include(dirname(__FILE__)."/function.php");
   ga('create', 'UA-35851793-2', 'ntust-bomb.org');
   ga('send', 'pageview');
 
-</script></head>
+</script>
+
+
+
+
+    <script type="text/javascript">
+$(function () {
+        $('#highchartscont').highcharts({
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'Monthly Average Temperature'
+            },
+            subtitle: {
+                text: 'Source: WorldClimate.com'
+            },
+            xAxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            },
+            yAxis: {
+                title: {
+                    text: 'Temperature (째C)'
+                }
+            },
+            tooltip: {
+                enabled: false,
+                formatter: function() {
+                    return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y +'째C';
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+            series: [{
+                name: 'Tokyo',
+                data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+            }, {
+                name: 'London',
+                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+            }]
+        });
+    });
+    
+
+    </script>
+
+</head>
 
   <body>
 
@@ -59,6 +112,15 @@ include(dirname(__FILE__)."/function.php");
         $stat_total=@$result[count];
         $result = mysql_fetch_array(mysql_query("SELECT time from `dormiptable`ORDER BY `time` DESC LIMIT 1"));
         $stat_time=date("Y-m-d H:i:s",@$result[time]);
+        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable` where `hostname`like'D1%'"));
+        $stat_d1=@$result[count];
+
+        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable` where `hostname`like'D2%'"));
+        $stat_d2=@$result[count];
+
+        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable` where `hostname`like'D4%'"));
+        $stat_d3=@$result[count];
+
 
 
 ?>
@@ -74,6 +136,9 @@ include(dirname(__FILE__)."/function.php");
           <h2>統計資訊</h2>
           <p>監控IP數量：<?=$stat_total;?></p>
           <p>上次更新時間：<?=$stat_time;?></p>
+          <p>第一宿舍：<?=$stat_d1;?></p>
+          <p>第二宿舍：<?=$stat_d2;?></p>
+          <p>第三宿舍：<?=$stat_d3;?></p>
         </div>
         <div class="col-lg-6">
           <h2>優點</h2>
@@ -87,11 +152,15 @@ include(dirname(__FILE__)."/function.php");
 
 
 
-      <div class="jumbotron">
+      <div class="highchartscont">
 
 
 
       </div>
+
+
+
+
 
       <div class="footer">
         <p>&copy; <a href="https://facebook.com/mousems">MouseMs</a>@台科大學生會資訊室 2013</p>
@@ -105,5 +174,8 @@ include(dirname(__FILE__)."/function.php");
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap-min.js"></script>
+    <script src="../../js/highcharts.js"></script>
+    <script src="../../js/modules/exporting.js"></script>
+
   </body>
 </html>
