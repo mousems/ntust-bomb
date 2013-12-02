@@ -43,6 +43,64 @@ include(dirname(__FILE__)."/function.php");
 
 
 
+<?
+        $Wormdb = @mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
+        mysql_select_db ($db_name);
+        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable`"));
+        $stat_total=@$result[count];
+        $result = mysql_fetch_array(mysql_query("SELECT time from `dormiptable`ORDER BY `time` DESC LIMIT 1"));
+        $stat_time=date("Y-m-d H:i:s",@$result[time]);
+        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable` where `hostname`like'D1%'"));
+        $stat_d1=@$result[count];
+
+        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable` where `hostname`like'D2%'"));
+        $stat_d2=@$result[count];
+
+        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable` where `hostname`like'D4%'"));
+        $stat_d3=@$result[count];
+
+
+        $dorm1_list_ip=array("");
+        $dorm1_list_flow=array("");
+        $result = mysql_query("SELECT flow,hostname,ip from `dormiptable` where `hostname`like'D1%' limit 10");
+ 
+          while($row = mysql_fetch_array($result))
+            {
+                array_push($dorm1_list_ip , $row[ip]);
+                array_push($dorm1_list_flow , $row[flow]);
+            }
+
+        $dorm2_list_ip=array("");
+        $dorm2_list_flow=array("");
+        $result = mysql_query("SELECT flow,hostname,ip from `dormiptable` where `hostname`like'D2%' limit 10");
+ 
+          while($row = mysql_fetch_array($result))
+            {
+                array_push($dorm2_list_ip , $row[ip]);
+                array_push($dorm2_list_flow , $row[flow]);
+            }
+        $dorm3_list_ip=array("");
+        $dorm3_list_flow=array("");
+        $result = mysql_query("SELECT flow,hostname,ip from `dormiptable` where `hostname`like'D4%' limit 10");
+ 
+          while($row = mysql_fetch_array($result))
+            {
+                array_push($dorm3_list_ip , $row[ip]);
+                array_push($dorm3_list_flow , $row[flow]);
+            }
+
+        $dorm1_str=$dorm1_list_flow[1];
+        $dorm2_str=$dorm1_list_flow[1];
+        $dorm3_str=$dorm1_list_flow[1];
+          for ($i=2; $i <=10 ; $i++) { 
+            $dorm1_str.=","."'".$dorm1_list_flow[$i]."'";
+            $dorm2_str.=","."'".$dorm2_list_flow[$i]."'";
+            $dorm3_str.=","."'".$dorm3_list_flow[$i]."'";
+          }
+
+
+
+?>
 
     <script type="text/javascript">
 $(function () {
@@ -51,13 +109,13 @@ $(function () {
                 type: 'line'
             },
             title: {
-                text: 'Monthly Average Temperature'
+                text: '各宿舍本日前10名流量'
             },
             subtitle: {
-                text: 'Source: WorldClimate.com'
+                text: ''
             },
             xAxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
             },
             yAxis: {
                 title: {
@@ -80,11 +138,14 @@ $(function () {
                 }
             },
             series: [{
-                name: 'Tokyo',
-                data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                name: 'D1',
+                data: [<?=$dorm1_str;?>]
             }, {
-                name: 'London',
-                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+                name: 'D2',
+                data: [<?=$dorm1_str;?>]
+            }, {
+                name: 'D3',
+                data: [<?=$dorm1_str;?>]
             }]
         });
     });
@@ -106,25 +167,6 @@ $(function () {
         </ul>
       </div>
 
-<?
-        $Wormdb = @mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
-        mysql_select_db ($db_name);
-        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable`"));
-        $stat_total=@$result[count];
-        $result = mysql_fetch_array(mysql_query("SELECT time from `dormiptable`ORDER BY `time` DESC LIMIT 1"));
-        $stat_time=date("Y-m-d H:i:s",@$result[time]);
-        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable` where `hostname`like'D1%'"));
-        $stat_d1=@$result[count];
-
-        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable` where `hostname`like'D2%'"));
-        $stat_d2=@$result[count];
-
-        $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable` where `hostname`like'D4%'"));
-        $stat_d3=@$result[count];
-
-
-
-?>
 
       <div class="jumbotron"> 
         <h2>系統狀態</h2>
@@ -150,10 +192,6 @@ $(function () {
           </ul>
        </div>
       </div>
-
-
-      <div id="highchartscont" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-
 
 
       <div class="footer">
