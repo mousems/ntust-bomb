@@ -62,36 +62,36 @@ include(dirname(__FILE__)."/function.php");
 
         $dorm1_list_ip=array("");
         $dorm1_list_flow=array("");
-        $result = mysql_query("SELECT flow,hostname,ip from `dormiptable` where `hostname`like'D1%' limit 10");
+        $result = mysql_query("SELECT flow,hostname,ip from `dormiptable` where `hostname`like'D1%' ORDER BY `flow` DESC LIMIT 10");
  
           while($row = mysql_fetch_array($result))
             {
-                array_push($dorm1_list_ip , $row[ip]);
-                array_push($dorm1_list_flow , $row[flow]);
+                @array_push($dorm1_list_ip , $row[ip]);
+                @array_push($dorm1_list_flow , $row[flow]);
             }
 
         $dorm2_list_ip=array("");
         $dorm2_list_flow=array("");
-        $result = mysql_query("SELECT flow,hostname,ip from `dormiptable` where `hostname`like'D2%' limit 10");
+        $result = mysql_query("SELECT flow,hostname,ip from `dormiptable` where `hostname`like'D2%' ORDER BY `flow` DESC LIMIT 10");
  
           while($row = mysql_fetch_array($result))
             {
-                array_push($dorm2_list_ip , $row[ip]);
-                array_push($dorm2_list_flow , $row[flow]);
+                @array_push($dorm2_list_ip , $row[ip]);
+                @array_push($dorm2_list_flow , $row[flow]);
             }
         $dorm3_list_ip=array("");
         $dorm3_list_flow=array("");
-        $result = mysql_query("SELECT flow,hostname,ip from `dormiptable` where `hostname`like'D4%' limit 10");
+        $result = mysql_query("SELECT flow,hostname,ip from `dormiptable` where `hostname`like'D4%' ORDER BY `flow` DESC LIMIT 10");
  
           while($row = mysql_fetch_array($result))
             {
-                array_push($dorm3_list_ip , $row[ip]);
-                array_push($dorm3_list_flow , $row[flow]);
+                @array_push($dorm3_list_ip , $row[ip]);
+                @array_push($dorm3_list_flow , $row[flow]);
             }
 
-        $dorm1_str=$dorm1_list_flow[1];
-        $dorm2_str=$dorm1_list_flow[1];
-        $dorm3_str=$dorm1_list_flow[1];
+        $dorm1_str="'".$dorm1_list_flow[1]."'";
+        $dorm2_str="'".$dorm2_list_flow[1]."'";
+        $dorm3_str="'".$dorm3_list_flow[1]."'";
           for ($i=2; $i <=10 ; $i++) { 
             $dorm1_str.=","."'".$dorm1_list_flow[$i]."'";
             $dorm2_str.=","."'".$dorm2_list_flow[$i]."'";
