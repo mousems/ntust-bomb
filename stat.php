@@ -56,7 +56,7 @@ include(dirname(__FILE__)."/function.php");
         $Wormdb = @mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
         mysql_select_db ($db_name);
         $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable`"));
-        echo $result[count];
+        $stat_total=@$result[count];
 
 ?>
 
