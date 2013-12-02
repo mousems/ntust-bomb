@@ -1,33 +1,6 @@
 <?php
 include(dirname(__FILE__)."/function.php");
 
-
-
-//facebook===========
-
-require 'facebook.php';
-$facebook = new Facebook(array(
-  'appId'  => $appId,
-  'secret' => $secret,
-));
-
-// Get User ID
-$user = $facebook->getUser();
-
-if ($user) {
-  try {
-    // Proceed knowing you have a logged in user who's authenticated.
-    $user_profile = $facebook->api('/me');
-  } catch (FacebookApiException $e) {
-    error_log($e);
-    $user = null;
-  }
-}
-
-//facebook===========
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="zh-tw">
@@ -82,9 +55,6 @@ if ($user) {
 <?
         $Wormdb = @mysql_connect($db_host, $db_user, $db_pass) or die ('錯誤:數據庫連接失敗');
         mysql_select_db ($db_name);
-
-
-        $fbid=mysql_real_escape_string($fbid);
         $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable`"));
         echo $result(count);
 
