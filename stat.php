@@ -58,7 +58,7 @@ include(dirname(__FILE__)."/function.php");
         $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable`"));
         $stat_total=@$result[count];
         $result = mysql_fetch_array(mysql_query("SELECT time from `dormiptable`ORDER BY `time` DESC LIMIT 1"));
-        $stat_time=date("Y-m-d H:i:s",@$result[time];)
+        $stat_time=date("Y-m-d H:i:s",@$result[time]);
 
 
 ?>
