@@ -152,14 +152,7 @@ $(function () {
       </div>
 
 
-
-      <div class="highchartscont">
-
-
-
-      </div>
-
-
+      <div id="highchartscont" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 
 
