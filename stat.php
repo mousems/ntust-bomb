@@ -57,6 +57,9 @@ include(dirname(__FILE__)."/function.php");
         mysql_select_db ($db_name);
         $result = mysql_fetch_array(mysql_query("SELECT count(*) as count from `dormiptable`"));
         $stat_total=@$result[count];
+        $result = mysql_fetch_array(mysql_query("SELECT time from `dormiptable`ORDER BY `time` DESC LIMIT 1"));
+        $stat_time=date("Y-m-d H:i:s",@$result[time];)
+
 
 ?>
 
@@ -67,26 +70,19 @@ include(dirname(__FILE__)."/function.php");
 
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-lg-4">
-          <h2>這是什麼？</h2>
-          <p>註冊後，我們將24小時監控你的宿舍流量，接近4.5GB時打電話騷擾你，避免流量爆炸。</p>
+        <div class="col-lg-6">
+          <h2>統計資訊</h2>
+          <p>監控IP數量：<?=$stat_total;?></p>
+          <p>上次更新時間：<?=$stat_time;?></p>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-6">
           <h2>優點</h2>
           <ul>
             <li>不用安裝軟體。</li>
             <li>不用任何費用，但歡迎贊助:)</li>
             <li>以電話通知你。</li>
           </ul>
-          
        </div>
-        <div class="col-lg-4">
-          <h2>注意事項</h2>
-          <p>系統10分鐘檢查一次，4.5GB打電話通知</p>
-          <p>打電話給你沒接到，被斷網我也沒辦法了orz</p>
-          <p>目前設計給台科大住宿生（有線網路）</p>
-          <p>若有特殊需求請<a href="mailto:b10115012@mail.ntust.edu.tw">聯絡作者</a></p>
-        </div>
       </div>
 
 
