@@ -119,14 +119,14 @@ $(function () {
             },
             yAxis: {
                 title: {
-                    text: 'Temperature (째C)'
+                    text: 'Temperature (C)'
                 }
             },
             tooltip: {
                 enabled: false,
                 formatter: function() {
                     return '<b>'+ this.series.name +'</b><br/>'+
-                        this.x +': '+ this.y +'째C';
+                        this.x +': '+ this.y +'C';
                 }
             },
             plotOptions: {
@@ -193,7 +193,7 @@ $(function () {
        </div>
       </div>
 
-
+      <div id="highchartscont" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
       <div class="footer">
         <p>&copy; <a href="https://facebook.com/mousems">MouseMs</a>@台科大學生會資訊室 2013</p>
       </div>
