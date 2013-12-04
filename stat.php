@@ -70,6 +70,16 @@ include(dirname(__FILE__)."/function.php");
                 @array_push($dorm1_list_flow , $row[flow]);
             }
 
+        $result = mysql_fetch_array(mysql_query("SELECT AVG(flow) as avg from `dormiptable` where `hostname`like'D1%'"));
+        $stat_d1_avg=@$result[avg];
+
+        $result = mysql_fetch_array(mysql_query("SELECT AVG(flow) as avg from `dormiptable` where `hostname`like'D2%'"));
+        $stat_d2_avg=@$result[avg];
+
+        $result = mysql_fetch_array(mysql_query("SELECT AVG(flow) as avg from `dormiptable` where `hostname`like'D4%'"));
+        $stat_d3_avg=@$result[avg];
+
+
         $dorm2_list_ip=array("");
         $dorm2_list_flow=array("");
         $result = mysql_query("SELECT flow,hostname,ip from `dormiptable` where `hostname`like'D2%' ORDER BY `flow` DESC LIMIT 10");
@@ -104,52 +114,56 @@ include(dirname(__FILE__)."/function.php");
 
     <script type="text/javascript">
 $(function () {
-        $('#highchartscont').highcharts({
+        $('#container').highcharts({
             chart: {
-                type: 'line'
+                type: 'column'
             },
             title: {
-                text: '各宿舍本日前10名流量'
+                text: 'Monthly Average Rainfall'
             },
             subtitle: {
-                text: ''
+                text: 'Source: WorldClimate.com'
             },
             xAxis: {
-                categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+                categories: [
+                    '寢室'
+                ]
             },
             yAxis: {
+                min: 0,
                 title: {
-                    text: 'Temperature (C)'
+                    text: 'Rainfall (mm)'
                 }
             },
             tooltip: {
-                enabled: false,
-                formatter: function() {
-                    return '<b>'+ this.series.name +'</b><br/>'+
-                        this.x +': '+ this.y +'C';
-                }
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
             },
             plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                    enableMouseTracking: false
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
                 }
             },
             series: [{
-                name: 'D1',
-                data: [<?=$dorm1_str;?>]
+                name: '第一宿舍',
+                data: [<?=$stat_d1_avg;?>]
+    
             }, {
-                name: 'D2',
-                data: [<?=$dorm1_str;?>]
+                name: '第二宿舍',
+                data: [<?=$stat_d2_avg;?>]
+    
             }, {
-                name: 'D3',
-                data: [<?=$dorm1_str;?>]
+                name: '第三宿舍',
+                data: [<?=$stat_d3_avg;?>]
+    
             }]
         });
     });
-    
 
     </script>
 
