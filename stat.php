@@ -119,32 +119,36 @@ $(function () {
                 type: 'column'
             },
             title: {
-                text: 'Monthly Average Rainfall'
+                text: '三宿舍流量平均值'
             },
             subtitle: {
                 text: 'Source: WorldClimate.com'
             },
             xAxis: {
                 categories: [
-                    '寢室'
+                    '宿舍'
                 ]
             },
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Rainfall (mm)'
+                    text: '流量 (MB)'
                 }
             },
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                    '<td style="padding:0"><b>{point.y:.1f} MB</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
             },
             plotOptions: {
+
                 column: {
+                    dataLabels: {
+                        enabled: true
+                    },
                     pointPadding: 0.2,
                     borderWidth: 0
                 }
@@ -197,7 +201,7 @@ $(function () {
           <p>第二宿舍：<?=$stat_d2;?></p>
           <p>第三宿舍：<?=$stat_d3;?></p>
         </div>
-        <div class="col-lg-6">
+        <div id="highchartscont" class="col-lg-6">
           <h2>優點</h2>
           <ul>
             <li>不用安裝軟體。</li>
@@ -207,7 +211,6 @@ $(function () {
        </div>
       </div>
 
-      <div id="highchartscont" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
       <div class="footer">
         <p>&copy; <a href="https://facebook.com/mousems">MouseMs</a>@台科大學生會資訊室 2013</p>
       </div>
