@@ -122,7 +122,7 @@ $(function () {
                 text: '三宿舍流量平均值'
             },
             subtitle: {
-                text: 'Source: WorldClimate.com'
+                text: '<?=date("Y-m-d H:i:s");?>'
             },
             xAxis: {
                 categories: [
