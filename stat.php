@@ -122,7 +122,7 @@ $(function () {
                 text: '三宿舍流量平均值'
             },
             subtitle: {
-                text: '<?=date("Y-m-d H:i:s");?>'
+                text: '<?=$stat_time;?>'
             },
             xAxis: {
                 categories: [
@@ -155,15 +155,15 @@ $(function () {
             },
             series: [{
                 name: '第一宿舍',
-                data: [<?=$stat_d1_avg;?>]
+                data: [<?=round($stat_d1_avg);?>]
     
             }, {
                 name: '第二宿舍',
-                data: [<?=$stat_d2_avg;?>]
+                data: [<?=round($stat_d2_avg);?>]
     
             }, {
                 name: '第三宿舍',
-                data: [<?=$stat_d3_avg;?>]
+                data: [<?=round($stat_d3_avg);?>]
     
             }]
         });
@@ -202,12 +202,7 @@ $(function () {
           <p>第三宿舍：<?=$stat_d3;?></p>
         </div>
         <div id="highchartscont" class="col-lg-6">
-          <h2>優點</h2>
-          <ul>
-            <li>不用安裝軟體。</li>
-            <li>不用任何費用，但歡迎贊助:)</li>
-            <li>以電話通知你。</li>
-          </ul>
+
        </div>
       </div>
 
