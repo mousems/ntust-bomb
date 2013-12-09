@@ -20,6 +20,8 @@ function getallflow(){
 				
 	while($row = mysql_fetch_array($result))
 		{
+			sleep(1);
+
 			$ip=$row['ip'];
 			$flow=(int)Getflow_toDB($ip);
 
