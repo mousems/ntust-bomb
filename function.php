@@ -1,11 +1,15 @@
 <?php
 $office_server="140.118.34.204";
 $db_host = "127.0.0.1";
-$db_user = "ntustbomb";
-$db_pass = "YjNXXsMxNdSDqW4Z";
-$db_name = "ntustbomb";
-$appId="518849124871148";
-$secret="1a303aadbf7b0b51d1feeb6bfabc9a76";
+
+$db_user = ""; // this will overwrite by function_secret.php
+$db_pass = "";// this will overwrite by function_secret.php
+$db_name = "";// this will overwrite by function_secret.php
+$appId="";// this will overwrite by function_secret.php
+$secret="";// this will overwrite by function_secret.php
+include(dirname(__FILE__)."/function_secret.php") 
+
+
 $dorm=1; //1=only dorm  , 2=all 118
 $crlf = '
 ';
