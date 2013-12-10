@@ -1,6 +1,7 @@
 <?php
 $office_server="140.118.34.204";
 $db_host = "127.0.0.1";
+<<<<<<< HEAD
 
 $db_user = ""; // this will overwrite by function_secret.php
 $db_pass = "";// this will overwrite by function_secret.php
@@ -10,6 +11,13 @@ $secret="";// this will overwrite by function_secret.php
 include(dirname(__FILE__)."/function_secret.php") 
 
 
+=======
+$db_user = "ntustbomb";
+$db_pass = "";
+$db_name = "";
+$appId="";
+$secret="";
+>>>>>>> 1956ee363d828e6d454833e8743d9074b7fe202e
 $dorm=1; //1=only dorm  , 2=all 118
 $crlf = '
 ';
